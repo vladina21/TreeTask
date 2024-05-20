@@ -20,7 +20,7 @@ jobs:
       - name: Install dependencies
         run: |
           cd ./Frontend
-          npm install vite
+          npm install
       - name: Build the project
         run: |
           cd ./Frontend
