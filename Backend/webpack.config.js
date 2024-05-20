@@ -9,6 +9,23 @@ export default {
   output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'dist'),
+  },  
+  resolve: {
+    fallback: {
+      crypto: false, 
+      buffer: false,
+      zlib: false,
+      querystring: false,
+      buffer: false,
+      path: false,
+      stream: false,
+      os: false,
+      http: false,
+      querystring: false,
+      string_decoder: false,
+      util: false,
+      url: false
+    },
   },
   module: {
     rules: [
