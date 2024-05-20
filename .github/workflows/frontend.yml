@@ -24,6 +24,7 @@ jobs:
       - name: Build the project
         run: |
           cd ./Frontend
+          sudo chmod +x node_modules/.bin/vite
           npm run build
 
     # - name: Archive production artifacts
