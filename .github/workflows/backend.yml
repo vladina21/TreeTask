@@ -1,4 +1,4 @@
-name: chat-service
+name: backend pipeline
 
 on:
   push:
@@ -29,7 +29,7 @@ jobs:
           npm run build
         env:
           NODE_ENV: production
-         
+
       - name: Archive node_modules
         uses: actions/upload-artifact@v2
         with:
@@ -52,14 +52,14 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: node_modules
-          path: ./Backend
+          path: ./Backend/node_modules
 
       - name: Run tests
         run: |
           cd ./Backend
           npm test
 
-   package:
+  package:
     needs: test
     runs-on: ubuntu-latest
     steps:
@@ -79,6 +79,6 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: ./Backend
-          file: Dockerfile
+          file: ./Backend/Dockerfile
           push: true
           tags: vladina/tree-task-backend:latest
