@@ -24,7 +24,11 @@ export default {
       querystring: false,
       string_decoder: false,
       util: false,
-      url: false
+      url: false,
+      fs: false, 
+      net: false, 
+      crypto: false, 
+      async_hooks: false,
     },
   },
   module: {
