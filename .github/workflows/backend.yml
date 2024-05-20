@@ -30,12 +30,6 @@ jobs:
         env:
           NODE_ENV: production
 
-      - name: Archive node_modules
-        uses: actions/upload-artifact@v2
-        with:
-          name: node_modules
-          path: ./Backend/node_modules
-
   test:
     needs: build
     runs-on: ubuntu-latest
@@ -48,15 +42,10 @@ jobs:
         with:
           node-version: '16'
 
-      - name: Download node_modules
-        uses: actions/download-artifact@v2
-        with:
-          name: node_modules
-          path: ./Backend/node_modules
-
       - name: Run tests
         run: |
           cd ./Backend
+          npm install
           npm test
 
   package:
