@@ -8,10 +8,10 @@ metadata:
 
 spec:
   ports:
-    - port: 3000
+    - port: 5173
       protocol: TCP
       name: nodejs-server
-      targetPort: 3000
+      targetPort: 5173
   selector:
     app: frontend-app
     tier: backend
