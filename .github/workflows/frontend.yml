@@ -100,5 +100,6 @@ jobs:
       - name: Deploy to AKS
         run: |
           kubectl apply -f ./Infrastructure/frontend_deployment/deployment.yaml
+          kubectl rollout restart deployment.apps/frontend-deployment
           kubectl apply -f ./Infrastructure/frontend_deployment/service.yaml
           kubectl apply -f ./Infrastructure/ingress.yaml

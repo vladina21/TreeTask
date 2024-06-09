@@ -105,7 +105,7 @@ jobs:
         
       - name: Deploy to AKS
         run: |
-          
           kubectl apply -f ./Infrastructure/backend_deployment/deployment.yaml
+          kubectl rollout restart deployment.apps/backend-deployment
           kubectl apply -f ./Infrastructure/backend_deployment/service.yaml
 
