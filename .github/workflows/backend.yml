@@ -1,4 +1,7 @@
 name: backend pipeline
+permissions:
+  id-token: write
+  contents: read
 
 on:
   push:
