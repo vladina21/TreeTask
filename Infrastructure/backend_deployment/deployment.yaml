@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+  namespace: default
+  labels:
+    app: backend-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: backend-app
+      tier: backend
+  template:
+    metadata:
+      labels:
+        app: backend-app
+        tier: backend
+    spec: # Pod spec
+      containers:
+      - name: backend-container
+        image: docker.io/vladina/tree-task-backend:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8000
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "200m"
+          limits:
+            memory: "256Mi"
+            cpu: "300m"
+      restartPolicy: Always

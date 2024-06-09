@@ -2,11 +2,14 @@ import React, { useState } from "react";
 import Title from "../components/Title";
 import Button from "../components/Button";
 import { IoMdAdd } from "react-icons/io";
-import { summary } from "../assets/data";
+//import { summary } from "../assets/data";
 import { getInitials } from "../utils";
 import clsx from "clsx";
 import ConfirmatioDialog, { UserAction } from "../components/Dialogs";
 import AddUser from "../components/AddUser";
+import { useGetUsersListQuery , useDeleteUserMutation, useUserActionMutation} from "../redux/slices/api/userApiSlice";
+import {toast } from 'sonner';
+import { formatDate } from "../utils";
 
 const Users = () => {
   const [openDialog, setOpenDialog] = useState(false);
@@ -14,8 +17,55 @@ const Users = () => {
   const [openAction, setOpenAction] = useState(false);
   const [selected, setSelected] = useState(null);
 
-  const userActionHandler = () => {};
-  const deleteHandler = () => {};
+  const {data, isLoading, refetch} = useGetUsersListQuery();
+  const [deleteUser]= useDeleteUserMutation();
+  const [userAction] = useUserActionMutation();
+
+  console.log(data);
+
+  const userActionHandler =  async () => {
+    try {
+      const result = await userAction({
+        isActive: !selected?.isActive ,
+        id: selected?._id,
+      });
+
+      refetch();
+
+      toast.success(result.data.message);
+      setSelected(null);
+
+      setTimeout(() => {
+        setOpenAction(false);
+      }, 500);
+      
+    } catch (error) {
+      console.log(error);
+      toast.error(error?.data?.message);
+      
+    }
+  };
+  const deleteHandler = async () => {
+    try {
+      const result = await deleteUser(selected);  
+      refetch();
+
+      toast.success("User deleted successfully");
+      setSelected(null);
+
+      setTimeout(() => {
+        setOpenDialog(false);
+      }, 500);
+
+
+      
+    } catch (error) {
+      console.log(error);
+      toast.error(error?.data?.message);
+      
+    }
+  };
+
 
   const deleteClick = (id) => {
     setSelected(id);
@@ -25,6 +75,11 @@ const Users = () => {
   const editClick = (el) => {
     setSelected(el);
     setOpen(true);
+  };
+
+  const userStatusClick = (el) => { 
+    setSelected(el);
+    setOpenAction(true);
   };
 
   const TableHeader = () => (
@@ -56,17 +111,17 @@ const Users = () => {
         </div>
       </td>
 
-      <td className='p-4'>{user.title}</td>
+      <td className='p-4'>{user.node}</td>
       <td className='p-4'>{user.email || "user.email.com"}</td>
       <td className='p-4'>{user.role}</td>
 
       <td>
-        <p className='text-sm text-gray-600'>{user.createdAt} </p>
+        <p className='text-sm text-gray-600'>{formatDate(new Date(user?.createdAt))} </p>
       </td>
 
       <td>
         <button
-          // onClick={() => userStatusClick(user)}
+          onClick={() => userStatusClick(user)}
           className={clsx(
             "w-fit px-4 py-1 rounded-full flex justify-center items-center text-s font-semibold",
             user?.isActive ? "bg-blue-200" : "bg-yellow-100"
@@ -98,7 +153,7 @@ const Users = () => {
     <>
       <div className='w-full md:px-1 px-0 mb-6'>
         <div className='flex items-center justify-between mb-8'>
-          <Title title='Utilizatori' />
+          <Title title='Users' />
           <Button
             onClick={() => setOpen(true)}
             label='Add New User'
@@ -113,7 +168,7 @@ const Users = () => {
             <table className='w-full mb-5'>
               <TableHeader />
               <tbody>
-                {summary.users?.map((user, index) => (
+                {data?.map((user, index) => (
                   <TableRow key={index} user={user} />
                 ))}
               </tbody>

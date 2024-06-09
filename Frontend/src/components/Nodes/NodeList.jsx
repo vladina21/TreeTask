@@ -1,30 +1,30 @@
 import { Listbox, Transition } from "@headlessui/react";
 import { Fragment, useEffect, useState } from "react";
 import { BsChevronExpand } from "react-icons/bs";
-import { summary } from "../../assets/data";
+import { summary , nodes } from "../../assets/data";
 import clsx from "clsx";
 import { getInitials } from "../../utils";
 import { MdCheck } from "react-icons/md";
 
-const NodeList = ({ setTeam, team }) => {
-  const data = summary.users;
+const NodeList = ({ setNode, node }) => {
+  const data = nodes;
   const [selectedUsers, setSelectedUsers] = useState([]);
 
   const handleChange = (el) => {
     setSelectedUsers(el);
-    setTeam(el?.map((u) => u._id));
+    setNode(el?.map((u) => u._id));
   };
   useEffect(() => {
-    if (team?.length < 1) {
+    if (node?.length < 1) {
       data && setSelectedUsers([data[0]]);
     } else {
-      setSelectedUsers(team);
+      setSelectedUsers(node);
     }
   }, []);
 
   return (
     <div>
-      <p className='text-gray-700'>Assign Task To: </p>
+      <p className='text-gray-700'>Assign User To Existing Node: </p>
       <Listbox
         value={selectedUsers}
         onChange={(el) => handleChange(el)}

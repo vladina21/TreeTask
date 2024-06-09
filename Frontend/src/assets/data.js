@@ -1116,20 +1116,69 @@ export const summary = {
   export const nodes = [
     {
       _id: "0",
-      name:"Comandament",
+      name: "Grupa C114B",
       level: 1,
       createdAt: "2024-02-06",
       updatedAt: "2024-02-07T06:13:26.757Z",
       parent: null,
-      nodeAdmin:[
+      nodeAdmin: [
         {
           _id: "65c202d4aa62f32ffd1303cc",
           name: "Vladina Surdu",
           title: "Administrator",
           email: "admin@gmail.com",
-        }]
-
-  }];
+        }
+      ]
+    },
+    {
+      _id: "1",
+      name: "Facultatea C",
+      level: 2,
+      createdAt: "2024-02-08",
+      updatedAt: "2024-02-09T07:24:30.921Z",
+      parent: "0",
+      nodeAdmin: [
+        {
+          _id: "34c203d5bb63g33ffd1404dd",
+          name: "Ion Popescu",
+          title: "Lead Developer",
+          email: "dev.lead@gmail.com",
+        }
+      ]
+    },
+    {
+      _id: "2",
+      name: "Facultatea E",
+      level: 2,
+      createdAt: "2024-02-10",
+      updatedAt: "2024-02-11T08:35:40.102Z",
+      parent: "0",
+      nodeAdmin: [
+        {
+          _id: "23d204e6cc64h44ffe1505ee",
+          name: "Maria Ionescu",
+          title: "Marketing Manager",
+          email: "marketing.manager@gmail.com",
+        }
+      ]
+    },
+    {
+      _id: "3",
+      name: "CETASC",
+      level: 2,
+      createdAt: "2024-02-12",
+      updatedAt: "2024-02-13T09:46:50.213Z",
+      parent: "0",
+      nodeAdmin: [
+        {
+          _id: "12e205f7dd75i55ffg1606ff",
+          name: "Alexandru Vasile",
+          title: "HR Director",
+          email: "hr.director@gmail.com",
+        }
+      ]
+    }
+  ];
   
   export const activitiesData = [
     {

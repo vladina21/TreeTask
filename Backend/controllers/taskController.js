@@ -28,7 +28,7 @@ export const createTask = async (req, res) => {
     const task = await Task.create({
       title,
       team,
-      stage: stage.toLowerCase(),
+      stage: stage,
       date,
       priority: priority.toLowerCase(),
       assets,
@@ -54,32 +54,36 @@ export const duplicateTask = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const task = await Task.findById(id);
+    const task = await Task.findById(id).lean(); // .lean() to get a plain JS object
 
-    const newTask = await Task.create({
-      ...task,
-      title: task.title + " - Duplicate",
-    });
-
-    newTask.team = task.team;
-    newTask.subTasks = task.subTasks;
-    newTask.assets = task.assets;
-    newTask.priority = task.priority;
-    newTask.stage = task.stage;
-
-    await newTask.save();
-
-    //alert users of the task
-    let text = "New task has been assigned to you";
-    if (task.team.length > 1) {
-      text = text + ` and ${task.team.length - 1} others.`;
+    if (!task) {
+      return res.status(404).json({ status: false, message: "Task not found." });
     }
 
-    text =
-      text +
-      ` The task priority is set a ${
-        task.priority
-      } priority, so check and act accordingly. The task date is ${task.date.toDateString()}. Thank you!!!`;
+    // Create a new task object excluding the _id and other system fields
+    const { _id, createdAt, updatedAt, ...taskData } = task;
+
+    // Add the "- Duplicate" suffix to the title and set the new date and status
+    const newTaskData = {
+      ...taskData,
+      title: task.title + " - Duplicate",
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+
+    // Create the new task
+    const newTask = await Task.create(newTaskData);
+
+    // Create the notification for the new task
+    let text = "New task has been assigned to you";
+    if (task.team.length > 1) {
+      text += ` and ${task.team.length - 1} others.`;
+    }
+    text += ` The task priority is set at ${
+      task.priority
+    } priority, so check and act accordingly. The task date is ${new Date(
+      task.date
+    ).toDateString()}. Thank you!!!`;
 
     await Notice.create({
       team: task.team,
@@ -87,14 +91,13 @@ export const duplicateTask = async (req, res) => {
       task: newTask._id,
     });
 
-    res
-      .status(200)
-      .json({ status: true, message: "Task duplicated successfully." });
+    res.status(200).json({ status: true, message: "Task duplicated successfully." });
   } catch (error) {
     console.log(error);
     return res.status(400).json({ status: false, message: error.message });
   }
 };
+
 
 export const postTaskActivity = async (req, res) => {
   try {
@@ -288,14 +291,14 @@ export const updateTask = async (req, res) => {
     task.date = date;
     task.priority = priority.toLowerCase();
     task.assets = assets;
-    task.stage = stage.toLowerCase();
+    task.stage = stage;
     task.team = team;
 
     await task.save();
 
     res
       .status(200)
-      .json({ status: true, message: "Task duplicated successfully." });
+      .json({ status: true, message: "Task updated successfully." });
   } catch (error) {
     console.log(error);
     return res.status(400).json({ status: false, message: error.message });

@@ -29,6 +29,7 @@ const AddNode = ({ open, setOpen }) => {
   const [assets, setAssets] = useState([]);
   const [uploading, setUploading] = useState(false);
 
+  const [node, setNode] = useState(task?.node || []);
   const submitHandler = () => {};
 
   const handleSelect = (e) => {
@@ -56,53 +57,21 @@ const AddNode = ({ open, setOpen }) => {
               register={register("title", { required: "Denumirea trebuie completată!" })}
               error={errors.title ? errors.title.message : ""}
             />
+               <Textbox
+              placeholder='Descrierea Nodului'
+              type='text'
+              name='title'
+              label='Descrierea Nodului'
+              className='w-full rounded'
+              register={register("title", { required: "Descrierea trebuie completată!" })}
+              error={errors.title ? errors.title.message : ""}
+            />
 
-            <NodeList setTeam={setTeam} team={team} />
+           
 
-            <div className='flex gap-4'>
-            
+            <NodeList setNode={setNode} node={node} /> 
 
-              <div className='w-full'>
-                <Textbox
-                  placeholder='Date'
-                  type='date'
-                  name='date'
-                  label='Task Date'
-                  className='w-full rounded'
-                  register={register("date", {
-                    required: "Date is required!",
-                  })}
-                  error={errors.date ? errors.date.message : ""}
-                />
-              </div>
-            </div>
-
-            <div className='flex gap-4'>
-              <SelectList
-                label='Priority Level'
-                lists={PRIORIRY}
-                selected={priority}
-                setSelected={setPriority}
-              />
-
-              <div className='w-full flex items-center justify-center mt-4'>
-                <label
-                  className='flex items-center gap-1 text-base text-ascent-2 hover:text-ascent-1 cursor-pointer my-4'
-                  htmlFor='imgUpload'
-                >
-                  <input
-                    type='file'
-                    className='hidden'
-                    id='imgUpload'
-                    onChange={(e) => handleSelect(e)}
-                    accept='.jpg, .png, .jpeg'
-                    multiple={true}
-                  />
-                  <BiImages />
-                  <span>Add Assets</span>
-                </label>
-              </div>
-            </div>
+          
 
             <div className='bg-gray-50 py-6 sm:flex sm:flex-row-reverse gap-4'>
               {uploading ? (

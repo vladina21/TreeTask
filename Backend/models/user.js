@@ -4,9 +4,11 @@ import mongoose, { Schema } from "mongoose";
 const userSchema = new Schema(
   {
     name: { type: String, required: true },
-    title: { type: String, required: true },
+    node: { type: String},
     role: { type: String, required: true },
     email: { type: String, required: true, unique: true },
+   // node : [{ type: Schema.Types.ObjectId, ref: "Node" }],
+    createdAt: { type: Date, default: Date.now },
     password: { type: String, required: true },
     isAdmin: { type: Boolean, required: true, default: false },
     tasks: [{ type: Schema.Types.ObjectId, ref: "Task" }],

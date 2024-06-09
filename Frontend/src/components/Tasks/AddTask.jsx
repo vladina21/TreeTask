@@ -7,33 +7,126 @@ import UserList from "./UserList";
 import SelectList from "../SelectList";
 import { BiImages } from "react-icons/bi";
 import Button from "../Button";
+import { getStorage, ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
+import { app } from "../../utils/firebase";
+import { useCreateTaskMutation, useUpdateTaskMutation } from "../../redux/slices/api/taskApiSlice";
+import { toast } from "sonner";
+import { dateFormatter } from "../../utils";
 
-const LISTS = ["TODO", "IN PROGRESS", "COMPLETED"];
+const LISTS = ["To Do", "In Progress", "Completed"];
 const PRIORIRY = ["HIGH", "MEDIUM", "NORMAL", "LOW"];
 
 const uploadedFileURLs = [];
 
-const AddTask = ({ open, setOpen }) => {
-  const task = "";
+const AddTask = ({ open, setOpen , task}) => {
+
+  const defaultValues ={
+    title: task?.title || "",
+    date : dateFormatter(task?.date) || new Date(),
+    team: [],
+    stage: "",
+    priority: "", 
+    assets: [],
+  }
+ 
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm({defaultValues});
+
+
   const [team, setTeam] = useState(task?.team || []);
-  const [stage, setStage] = useState(task?.stage?.toUpperCase() || LISTS[0]);
+  const [stage, setStage] = useState(task?.stage || LISTS[0]);
   const [priority, setPriority] = useState(
     task?.priority?.toUpperCase() || PRIORIRY[2]
   );
   const [assets, setAssets] = useState([]);
   const [uploading, setUploading] = useState(false);
 
-  const submitHandler = () => {};
+  const [createTask, { isLoading }] = useCreateTaskMutation();
+  const [updateTask, {isLoading : isUpdating}] = useUpdateTaskMutation();
+  const URLS = task?.assets ? [...task.assets] : [];
+
+  const submitHandler = async (data) => {
+    for(const file of assets) {
+      setUploading(true);
+      try {
+        await uploadFile(file);
+      } catch (error) {
+        console.log("Error uploading file: ", error.message);
+        return;
+      } finally {
+        setUploading(false);
+      }
+    }
+
+    try {
+      const newData = {
+        ...data, 
+        assets: [...URLS, ...uploadedFileURLs],
+        team, 
+        stage,
+        priority,
+   
+      };
+
+      console.log("Task data being sent:", newData);
+      console.log("Task ID:", task?._id);
+      
+      const res = task?._id
+      ? await updateTask({...newData, _id: task._id}).unwrap()
+      : await createTask(newData).unwrap();
+
+      toast.success(res?.message || "Task added successfully");
+
+      setTimeout(() => {
+        setOpen(false);
+      }, 500);
+
+    }
+    catch (error) {
+      console.log(error);
+      toast.error("Error adding task");
+    }
+  };
 
   const handleSelect = (e) => {
     setAssets(e.target.files);
   };
+
+
+  //add assets to firebase storage
+  const uploadFile = async (file) => {
+    const storage = getStorage(app);
+    const name = new Date().getTime() + file.name; 
+    const storageRef = ref(storage, name);
+    
+    const uploadTask = uploadBytesResumable(storageRef, file);
+
+    return new Promise((resolve, reject) => {
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          //const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log("Uploading");
+        },
+        (error) => {
+          reject(error);
+        },
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            uploadedFileURLs.push(downloadURL);
+            resolve(downloadURL);
+          })
+          .catch((error) => {
+            reject(error);
+          });
+        }
+      );
+    });
+  }
 
   return (
     <>

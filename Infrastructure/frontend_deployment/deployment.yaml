@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-deployment
+  namespace: default
+  labels:
+    app: frontend-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: frontend-app
+      tier: backend
+  template:
+    metadata:
+      labels:
+        app: frontend-app
+        tier: backend
+    spec: # Pod spec
+      containers:
+      - name: frontend-container
+        image: docker.io/vladina/tree-task-frontend:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 3000
+        resources:
+          requests:
+            memory: "1024Mi"
+            cpu: "100m"
+          limits:
+            memory: "2048Mi"
+            cpu: "200m"
+      restartPolicy: Always

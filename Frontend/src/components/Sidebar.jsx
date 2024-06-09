@@ -20,17 +20,17 @@ const linkData = [
     icon: <MdDashboard />,
   },
   {
-    label: "Utilizatori",
+    label: "Users",
     link: "users",
     icon: <FaUsers />,
   },
   {
-    label: "Planificare",
+    label: "Planner",
     link: "completed/completed",
     icon: <MdTaskAlt />,
   },
   {
-    label: "Organigrama",
+    label: "Organigram",
     link: "organigram",
     icon: <ImTree />,
   },

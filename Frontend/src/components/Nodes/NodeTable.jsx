@@ -34,11 +34,11 @@ const NodeTable = ({ tasks }) => {
   const TableHeader = () => (
     <thead className='w-full border-b border-gray-300'>
       <tr className='w-full text-black  text-left'>
-        <th className='py-2'>Denumire Nod</th>
-        <th className='py-2'>Prioritate</th>
-        <th className='py-2 line-clamp-1'>Creat La</th>
-        <th className='py-2'>Nod Tată</th>
-        <th className='py-2'>Administrator</th>
+        <th className='py-2'>Name</th>
+        <th className='py-2'>Priority</th>
+        <th className='py-2 line-clamp-1'>Created At</th>
+        <th className='py-2'>Parent Node</th>
+        <th className='py-2'>Admin</th>
       </tr>
     </thead>
   );
