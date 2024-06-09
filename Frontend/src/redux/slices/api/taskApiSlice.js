@@ -1,7 +1,7 @@
 // import { createSubTask, createTask, duplicateTask, trashTask, updateTask } from "../../../../../Backend/controllers/taskController";
 import { apiSlice } from "../apiSlice";
 
-const TASK_URL = "/task";
+const TASK_URL = "/api/task";
 
 export const taskApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({

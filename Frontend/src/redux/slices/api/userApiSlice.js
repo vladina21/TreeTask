@@ -1,7 +1,7 @@
 //import { getUsersList } from "../../../../../Backend/controllers/userController";
 import { apiSlice } from "../apiSlice";
 
-const USER_URL = "/user"
+const USER_URL = "/api/user"
 
 export const userApiSlice = apiSlice.injectEndpoints({
     endpoints : (builder) => ({
