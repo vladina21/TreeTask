@@ -71,3 +71,38 @@ jobs:
           file: ./Backend/Dockerfile
           push: true
           tags: vladina/tree-task-backend:latest
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: package
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: OIDC Login to Azure Public Cloud with Az CLI
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }} 
+          enable-AzPSSession: false
+
+      - name: Set up Kubectl
+        uses: azure/setup-kubectl@v1
+        with:
+          version: 'latest'
+
+      - name: Install Azure CLI
+        run: |
+          curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+
+      - name: Configure kubectl to connect to AKS cluster
+        run: |
+          az aks get-credentials --resource-group tree-task --name tree-task-cluster
+        
+      - name: Deploy to AKS
+        run: |
+          
+          kubectl apply -f ./Infrastructure/backend_deployment/deployment.yaml
+          kubectl apply -f ./Infrastructure/backend_deployment/service.yaml
+

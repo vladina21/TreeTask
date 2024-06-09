@@ -99,6 +99,5 @@ jobs:
         
       - name: Deploy to AKS
         run: |
-          pwd
           kubectl apply -f ./Infrastructure/frontend_deployment/deployment.yaml
           kubectl apply -f ./Infrastructure/frontend_deployment/service.yaml
