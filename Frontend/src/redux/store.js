@@ -14,4 +14,5 @@ const store = configureStore({
         devTools: true,
 })
 
+
 export default store;
