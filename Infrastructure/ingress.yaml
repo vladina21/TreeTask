@@ -16,7 +16,7 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: bac            kend-service
+            name: backend-service
             port:
               number: 8000
       - path: /
