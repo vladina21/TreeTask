@@ -10,6 +10,7 @@ RUN npm install --force
 COPY ./src /app/src
 COPY ./public /app/public
 COPY ./index.html /app/index.html
+COPY ./.env /app/.env
 
 
 RUN npm run build

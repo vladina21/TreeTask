@@ -6,10 +6,12 @@ export default defineConfig({
   plugins: [react()],
 
   server : {
-    port : 3000,
+    //port : 3000,
+    port : 80,  
     proxy : {
       "/api" : {
-        target : 'http://localhost:8000',
+        //target : 'http://localhost:8000',
+        target : 'http://tree-task.uksouth.cloudapp.azure.com',
         changeOrigin : true,
       }
     }

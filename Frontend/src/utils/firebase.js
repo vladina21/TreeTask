@@ -5,7 +5,8 @@ import { initializeApp } from "firebase/app";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  //apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  apiKey: "AIzaSyA7mB7dykGN7nAMNHcTgLNy_qZL75pAtLI",
   authDomain: "treetask-59d44.firebaseapp.com",
   projectId: "treetask-59d44",
   storageBucket: "treetask-59d44.appspot.com",
