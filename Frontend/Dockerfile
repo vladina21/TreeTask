@@ -11,6 +11,7 @@ COPY ./src /app/src
 COPY ./public /app/public
 COPY ./index.html /app/index.html
 COPY ./.env /app/.env
+COPY ./vite.config.js /app/vite.config.js
 
 
 RUN npm run build
