@@ -5,17 +5,17 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   optimizeDeps: {
-    exclude: ['*']
+    noDiscovery: true
   },
-  build: {
-    rollupOptions: {
-      output: {
-        manualChunks: {
-          'react-vendor': ['react', 'react-dom', 'react-redux', 'react-router-dom','react-icons','react-dom/client'],
-        },
-      },
-    },
-  },
+  // build: {
+  //   rollupOptions: {
+  //     output: {
+  //       manualChunks: {
+  //         'react-vendor': ['react', 'react-dom', 'react-redux', 'react-router-dom','react-icons','react-dom/client'],
+  //       },
+  //     },
+  //   },
+  // },
   server : {
     //port : 3000,
     host: '0.0.0.0',
