@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [react()],
   optimizeDeps: {
     noDiscovery: true,
-    include: ['react', 'react-dom']
+    include: ['react', 'react-dom','react-redux']
   },
   // build: {
   //   rollupOptions: {
