@@ -18,8 +18,10 @@ export default defineConfig({
   //   },
   // },
   server : {
-    //port : 3000,
+    
     host: '0.0.0.0',
+    //host : '127.0.0.1',
+
     port : 5173,  
     proxy : {
       "/api" : {
@@ -30,3 +32,19 @@ export default defineConfig({
     }
   }
 })
+
+
+//LOCALHOST
+// export default defineConfig({
+//   plugins: [react()],
+
+//   server: {
+//     port: 3000,
+//     proxy: {
+//       "/api": {
+//         target: "http://localhost:8000",
+//         changeOrigin: true,
+//       },
+//     },
+//   },
+// });
