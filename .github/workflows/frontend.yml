@@ -34,10 +34,15 @@ jobs:
           cd ./Frontend
           npm list
 
+      - name: Clear Vite cache
+        run: |
+          cd ./Frontend
+          rm -rf node_modules/.vite/
+
       - name: Build the project
         run: |
           cd ./Frontend
-          npm run dev
+          npm run build
 
     # - name: Archive production artifacts
     #   uses: actions/upload-artifact@v2
