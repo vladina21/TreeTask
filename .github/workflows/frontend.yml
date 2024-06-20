@@ -34,11 +34,6 @@ jobs:
           cd ./Frontend
           npm list
 
-      - name: Clear Vite cache
-        run: |
-          cd ./Frontend
-          rm -rf node_modules/.vite/
-
       - name: Build the project
         run: |
           cd ./Frontend
