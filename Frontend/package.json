@@ -34,6 +34,9 @@
     "react-router-dom": "^6.22.3",
     "react-toastify": "^10.0.5",
     "recharts": "^2.12.3",
+    "redux": "^5.0.1",
+    "redux-devtools-extension": "^2.13.9",
+    "redux-thunk": "^3.1.0",
     "sonner": "^1.4.41",
     "use-sync-external-store": "^1.2.2"
   },
