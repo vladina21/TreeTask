@@ -9,7 +9,7 @@ import { IoMdAdd } from "react-icons/io";
 import Tabs from "../components/Tabs";
 import TaskTitle from "../components/TaskTitle";
 import BoardView from "../components/BoardView";
-import { tasks } from "../assets/data";
+
 import Table from "../components/Tasks/Table";
 import AddTask from "../components/Tasks/AddTask";
 import { useGetAllTaskQuery } from "../redux/slices/api/taskApiSlice";

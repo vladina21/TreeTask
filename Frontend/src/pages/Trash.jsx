@@ -8,11 +8,11 @@ import {
   MdOutlineRestore,
 } from "react-icons/md";
 import { useParams } from "react-router-dom";
-import { tasks } from "../assets/data";
+
 import Title from "../components/Title";
 import Button from "../components/Button";
 import { PRIORITYSTYLES, TASK_TYPE } from "../utils";
-import AddUser from "../components/AddUser";
+
 import ConfirmatioDialog from "../components/Dialogs";
 import { useGetTrashedTasksQuery, useDeleteRestoreTaskMutation } from "../redux/slices/api/taskApiSlice";
 import Loading from "../components/Loader";
