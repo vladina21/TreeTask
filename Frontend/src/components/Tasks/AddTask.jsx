@@ -150,7 +150,7 @@ const AddTask = ({ open, setOpen , task}) => {
               error={errors.title ? errors.title.message : ""}
             />
 
-            <UserList setTeam={setTeam} team={team} />
+            <UserList setUser={setTeam} user={team} fieldLabel="Assign Users"/>
 
             <div className='flex gap-4'>
               <SelectList

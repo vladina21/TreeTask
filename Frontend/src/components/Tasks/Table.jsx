@@ -90,6 +90,7 @@ const Table = ({ tasks }) => {
         </div>
       </td>
 
+      {console.log(task)}
       <td className='py-2'>
         <div className='flex'>
           {task?.team?.map((m, index) => (

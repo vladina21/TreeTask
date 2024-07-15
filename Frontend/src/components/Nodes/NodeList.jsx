@@ -1,39 +1,40 @@
 import { Listbox, Transition } from "@headlessui/react";
 import { Fragment, useEffect, useState } from "react";
 import { BsChevronExpand } from "react-icons/bs";
-import { summary , nodes } from "../../assets/data";
 import clsx from "clsx";
 import { getInitials } from "../../utils";
 import { MdCheck } from "react-icons/md";
+import { useGetNodesListQuery, useDeleteNodeMutation} from "../../redux/slices/api/nodeApiSlice";
 
-const NodeList = ({ setNode, node }) => {
-  const data = nodes;
-  const [selectedUsers, setSelectedUsers] = useState([]);
+const NodeList = ({ setNode, node, fieldLabel}) => {
+  const { data, isLoading, isError, refetch } = useGetNodesListQuery();
+  const [selectedNodes, setSelectedNodes] = useState([]);
+
+  useEffect(() => {
+    // Check if data is available and set default selected nodes and setNode state
+    if (!isLoading && data && data.length > 0) {
+      setSelectedNodes([data[0]]);
+      setNode([data[0].name]); // Set default state for setNode to data[0].name
+    }
+  }, [isLoading, data]); // Add isLoading and data as dependencies
 
   const handleChange = (el) => {
-    setSelectedUsers(el);
-    setNode(el?.map((u) => u._id));
+    setSelectedNodes(el);
+    setNode(el?.map((u) => u.name));
   };
-  useEffect(() => {
-    if (node?.length < 1) {
-      data && setSelectedUsers([data[0]]);
-    } else {
-      setSelectedUsers(node);
-    }
-  }, []);
 
   return (
     <div>
-      <p className='text-gray-700'>Assign User To Existing Node: </p>
+      <p className='text-gray-700'>{fieldLabel}: </p>
       <Listbox
-        value={selectedUsers}
+        value={selectedNodes}
         onChange={(el) => handleChange(el)}
         multiple
       >
         <div className='relative mt-1'>
           <Listbox.Button className='relative w-full cursor-default rounded bg-white pl-3 pr-10 text-left px-3 py-2.5 2xl:py-3 border border-gray-300 sm:text-sm'>
             <span className='block truncate'>
-              {selectedUsers?.map((user) => user.name).join(", ")}
+              {selectedNodes?.map((user) => user.name).join(", ")}
             </span>
 
             <span className='pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2'>

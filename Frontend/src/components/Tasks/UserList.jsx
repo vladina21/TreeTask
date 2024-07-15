@@ -1,39 +1,40 @@
 import { Listbox, Transition } from "@headlessui/react";
 import { Fragment, useEffect, useState } from "react";
 import { BsChevronExpand } from "react-icons/bs";
-import { summary } from "../../assets/data";
 import clsx from "clsx";
 import { getInitials } from "../../utils";
 import { MdCheck } from "react-icons/md";
+import { useGetUsersListQuery} from "../../redux/slices/api/userApiSlice";
 
-const UserList = ({ setTeam, team }) => {
-  const data = summary.users;
-  const [selectedUsers, setSelectedUsers] = useState([]);
+const UserList = ({ setUser, user, fieldLabel}) => {
+  const { data, isLoading, isError, refetch } = useGetUsersListQuery();
+  const [selectedusers, setSelectedusers] = useState([]);
+
+  useEffect(() => {
+    // Check if data is available and set default selected users and setUser state
+    if (!isLoading && data && data.length > 0) {
+      setSelectedusers([data[0]]);
+      setUser([data[0]._id]); // Set default state for setUser to data[0].name
+    }
+  }, [isLoading, data]); // Add isLoading and data as dependencies
 
   const handleChange = (el) => {
-    setSelectedUsers(el);
-    setTeam(el?.map((u) => u._id));
+    setSelectedusers(el);
+    setUser(el?.map((u) => u._id));
   };
-  useEffect(() => {
-    if (team?.length < 1) {
-      data && setSelectedUsers([data[0]]);
-    } else {
-      setSelectedUsers(team);
-    }
-  }, []);
 
   return (
     <div>
-      <p className='text-gray-700'>Assign Task To: </p>
+      <p className='text-gray-700'>{fieldLabel}: </p>
       <Listbox
-        value={selectedUsers}
+        value={selectedusers}
         onChange={(el) => handleChange(el)}
         multiple
       >
         <div className='relative mt-1'>
           <Listbox.Button className='relative w-full cursor-default rounded bg-white pl-3 pr-10 text-left px-3 py-2.5 2xl:py-3 border border-gray-300 sm:text-sm'>
             <span className='block truncate'>
-              {selectedUsers?.map((user) => user.name).join(", ")}
+              {selectedusers?.map((user) => user.name).join(", ")}
             </span>
 
             <span className='pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2'>

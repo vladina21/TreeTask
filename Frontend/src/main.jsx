@@ -5,6 +5,8 @@ import { BrowserRouter } from 'react-router-dom'
 import { Provider } from 'react-redux' 
 import './index.css'
 import store from './redux/store'
+//import { PrimeReactProvider } from 'primereact/api';
+
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>

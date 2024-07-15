@@ -21,6 +21,22 @@ export const taskApiSlice = apiSlice.injectEndpoints({
       }),
     }),
 
+    getTask: builder.query({
+      query: (id) => ({
+        url: `${TASK_URL}/${id}`,
+        method: "GET",
+        credentials: "include", //send cookies
+      }),
+    }),
+
+    getTrashedTasks: builder.query({
+      query: ({strQuery, search}) => ({
+        url: `${TASK_URL}/get-trashed-tasks?stage=${strQuery}&search=${search}`,
+        method: "GET",
+        credentials: "include", //send cookies
+      }),
+    }),
+
     createTask: builder.mutation({
         query: (data) => ({
             url: `${TASK_URL}/create`,
@@ -64,15 +80,28 @@ export const taskApiSlice = apiSlice.injectEndpoints({
         }),
     }),
 
+    deleteRestoreTask: builder.mutation({
+      query: ({actionType, id}) => ({
+          url : `${TASK_URL}/delete-restore/${id}?actionType=${actionType}`,
+          method: "DELETE",
+          credentials: "include"  //send cookies
+
+      }),
+
+  }),
+
   }),
 });
 
 export const { useGetDashboardStatsQuery,
     useGetAllTaskQuery,
+    useGetTaskQuery,
     useCreateTaskMutation,
     useDuplicateTaskMutation,
     useUpdateTaskMutation,
     useTrashTaskMutation,
+    useGetTrashedTasksQuery,
     useCreateSubTaskMutation,
+    useDeleteRestoreTaskMutation,
 
 } = taskApiSlice;

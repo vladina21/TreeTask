@@ -39,17 +39,6 @@ const linkData = [
     link: "tasks",
     icon: <FaTasks />,
   },
-
-  {
-    label: "In Progress",
-    link: "in-progress/in progress",
-    icon: <MdOutlinePendingActions />,
-  },
-  {
-    label: "To Do",
-    link: "todo/todo",
-    icon: <MdOutlinePendingActions />,
-  },
  
  
   {

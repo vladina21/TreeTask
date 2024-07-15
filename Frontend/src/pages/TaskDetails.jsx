@@ -19,6 +19,7 @@ import Tabs from "../components/Tabs";
 import { PRIORITYSTYLES, TASK_TYPE, getInitials } from "../utils";
 import Loading from "../components/Loader";
 import Button from "../components/Button";
+import { useGetTaskQuery } from "../redux/slices/api/taskApiSlice";
 
 const assets = [
   "https://images.pexels.com/photos/2418664/pexels-photo-2418664.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
@@ -92,9 +93,20 @@ const TaskDetails = () => {
   const [selected, setSelected] = useState(0);
   const task = tasks[3];
 
-  return (
+  const {data, isLoading, refetch} = useGetTaskQuery(id);
+
+  console.log("Task data -- ", data);
+
+  return isLoading ? (
+    <>
+      {console.log("task is loading")}
+      <div className="py-10">
+        <Loading />
+      </div>
+    </>
+  ) : (
     <div className='w-full flex flex-col gap-3 mb-4 overflow-y-hidden'>
-      <h1 className='text-2xl text-gray-600 font-bold'>{task?.title}</h1>
+      <h1 className='text-2xl text-gray-600 font-bold'>{data?.task.title}</h1>
 
       <Tabs tabs={TABS} setSelected={setSelected}>
         {selected === 0 ? (
@@ -106,40 +118,40 @@ const TaskDetails = () => {
                   <div
                     className={clsx(
                       "flex gap-1 items-center text-base font-semibold px-3 py-1 rounded-full",
-                      PRIORITYSTYLES[task?.priority],
-                      bgColor[task?.priority]
+                      PRIORITYSTYLES[data?.task.priority],
+                      bgColor[data?.task.priority]
                     )}
                   >
-                    <span className='text-lg'>{ICONS[task?.priority]}</span>
-                    <span className='uppercase'>{task?.priority} Priority</span>
+                    <span className='text-lg'>{ICONS[data?.task.priority]}</span>
+                    <span className='uppercase'>{data?.task.priority} Priority</span>
                   </div>
 
                   <div className={clsx("flex items-center gap-2")}>
                     <div
                       className={clsx(
                         "w-4 h-4 rounded-full",
-                        TASK_TYPE[task.stage]
+                        TASK_TYPE[data?.task.stage]
                       )}
                     />
-                    <span className='text-black uppercase'>{task?.stage}</span>
+                    <span className='text-black uppercase'>{data?.task.stage}</span>
                   </div>
                 </div>
 
                 <p className='text-gray-500'>
-                  Created At: {new Date(task?.date).toDateString()}
+                  Created At: {new Date(data?.task.date).toDateString()}
                 </p>
 
                 <div className='flex items-center gap-8 p-4 border-y border-gray-200'>
                   <div className='space-x-2'>
                     <span className='font-semibold'>Assets :</span>
-                    <span>{task?.assets?.length}</span>
+                    <span>{data?.task.assets?.length}</span>
                   </div>
 
                   <span className='text-gray-400'>|</span>
 
                   <div className='space-x-2'>
                     <span className='font-semibold'>Sub-Task :</span>
-                    <span>{task?.subTasks?.length}</span>
+                    <span>{data?.task.subTasks?.length}</span>
                   </div>
                 </div>
 
@@ -148,7 +160,7 @@ const TaskDetails = () => {
                     TASK TEAM
                   </p>
                   <div className='space-y-3'>
-                    {task?.team?.map((m, index) => (
+                    {data?.task.team?.map((m, index) => (
                       <div
                         key={index}
                         className='flex gap-4 py-2 items-center border-t border-gray-200'
@@ -177,7 +189,7 @@ const TaskDetails = () => {
                     SUB-TASKS
                   </p>
                   <div className='space-y-8'>
-                    {task?.subTasks?.map((el, index) => (
+                    {data?.task.subTasks?.map((el, index) => (
                       <div key={index} className='flex gap-3'>
                         <div className='w-10 h-10 flex items-center justify-center rounded-full bg-violet-50-200'>
                           <MdTaskAlt className='text-violet-600' size={26} />
@@ -206,11 +218,11 @@ const TaskDetails = () => {
                 <p className='text-lg font-semibold'>ASSETS</p>
 
                 <div className='w-full grid grid-cols-2 gap-4'>
-                  {task?.assets?.map((el, index) => (
+                  {data?.task.assets?.map((el, index) => (
                     <img
                       key={index}
                       src={el}
-                      alt={task?.title}
+                      alt={data?.task.title}
                       className='w-full rounded h-28 md:h-36 2xl:h-52 cursor-pointer transition-all duration-700 hover:scale-125 hover:z-50'
                     />
                   ))}

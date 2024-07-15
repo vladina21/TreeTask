@@ -10,6 +10,7 @@ import {
   postTaskActivity,
   trashTask,
   updateTask,
+  getTrashedTasks,
 } from "../controllers/taskController.js";
 import { isAdminRoute, protectRoute } from "../middlewares/authMiddleware.js";
 
@@ -21,6 +22,7 @@ router.post("/activity/:id", protectRoute, postTaskActivity);
 
 router.get("/dashboard", protectRoute, dashboardStatistics);
 router.get("/", protectRoute, getTasks);
+router.get("/get-trashed-tasks", protectRoute, getTrashedTasks);
 router.get("/:id", protectRoute, getTask);
 
 router.put("/create-subtask/:id", protectRoute, isAdminRoute, createSubTask);
